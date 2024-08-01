@@ -5,9 +5,9 @@ import com.storage.entity.User;
 import com.storage.repository.AccountRepository;
 import com.storage.repository.UserRepository;
 import com.user.dto.request.UserDto.UserRegisterReq;
-import com.user.util.SHA256;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -16,6 +16,7 @@ public class AuthService {
     private final AccountRepository accountRepository;
     private final UserRepository userRepository;
 
+    @Transactional
     public void register(UserRegisterReq request) {
         if (accountRepository.existsByEmail(request.getEmail())) {
             throw new RuntimeException("이메일 중복 (이메일을 확인해주세요): " + request.getEmail());
@@ -24,7 +25,7 @@ public class AuthService {
         // Account 엔티티 생성
         Account account = Account.builder()
                 .email(request.getEmail())
-                .password(SHA256.encrypt(request.getPassword()))
+                .password(request.getPassword())
                 .build();
 
         // User 엔티티 생성
