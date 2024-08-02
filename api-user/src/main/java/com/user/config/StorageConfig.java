@@ -1,4 +1,4 @@
-package com.storage.config;
+package com.user.config;
 
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
