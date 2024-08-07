@@ -9,9 +9,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @RestControllerAdvice
 public class ApiExceptionHandler {
 
@@ -19,9 +16,9 @@ public class ApiExceptionHandler {
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<ErrorResponse> handleCustomException(CustomException ex) {
         ErrorCode errorCode = ex.getErrorCode();
-        ErrorResponse error = new ErrorResponse(errorCode.getStatus().value(), errorCode.getMessage());
+        ErrorResponse error = new ErrorResponse(errorCode.getCode(), errorCode.getMessage());
         error.setCode(errorCode.getCode());
-        return new ResponseEntity<>(error, errorCode.getStatus());
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -36,18 +33,14 @@ public class ApiExceptionHandler {
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
+        FieldError firstError = ex.getBindingResult().getFieldErrors().stream()
+                .findFirst()
+                .orElse(null);
 
-        ErrorResponse errorResponse = new ErrorResponse(
-                HttpStatus.BAD_REQUEST.value(),
-                "입력값 검증 실패"
-        );
-        errorResponse.setErrors(errors);
+        ErrorCode errorCode = ErrorCode.ERROR_BE1002; // 기본 에러 코드
+        String errorMessage = (firstError != null) ? firstError.getDefaultMessage() : errorCode.getMessage();
+
+        ErrorResponse errorResponse = new ErrorResponse(errorCode.getCode(), errorMessage);
 
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
