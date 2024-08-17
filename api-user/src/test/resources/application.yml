@@ -3,10 +3,12 @@ spring:
       name: api-user-test
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
-    hibernate:
-      ddl-auto: create-drop
     properties:
       hibernate:
+        hbm2ddl:
+          auto: create-only
+          # jpa.hibernate.ddl-auto = create 보다 우선 순위를 가지며,
+          # create 는 기존 테이블을 삭제하고 시작하려하기 때문에 스키마가 생성되지 않은 시점에서 오류가 발생.
         format_sql: true
         show_sql: true
         dialect: org.hibernate.dialect.MySQL8Dialect
