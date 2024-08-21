@@ -8,12 +8,12 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    services:
-      docker:
-        image: docker:dind
-        options: --privileged
-        ports:
-          - 2375:2375
+#    services:
+#      docker:
+#        image: docker:dind
+#        options: --privileged
+#        ports:
+#          - 2375:2375
 
     steps:
       - uses: actions/checkout@v4
@@ -24,8 +24,8 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+#      - name: Grant execute permission for gradlew
+#        run: chmod +x gradlew
 
       - name: Build with Gradle
         run: ./gradlew build -x test
