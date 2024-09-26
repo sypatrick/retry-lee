@@ -4,7 +4,7 @@ FROM eclipse-temurin:21
 WORKDIR /app
 
 # 빌드된 JAR 파일을 컨테이너로 복사
-COPY build/libs/api-user*.jar api-user.jar
+COPY api-user/build/libs/api-user*.jar api-user.jar
 
 # db-config.yml 파일을 컨테이너로 복사
 COPY storage/src/main/resources/db-config.yml /app/config/db-config.yml
