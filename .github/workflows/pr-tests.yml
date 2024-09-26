@@ -8,12 +8,12 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-#    services:
-#      docker:
-#        image: docker:dind
-#        options: --privileged
-#        ports:
-#          - 2375:2375
+    #    services:
+    #      docker:
+    #        image: docker:dind
+    #        options: --privileged
+    #        ports:
+    #          - 2375:2375
 
     steps:
       - uses: actions/checkout@v4
@@ -35,6 +35,3 @@ jobs:
 
       - name: Run E2E Tests
         run: ./gradlew E2eTest
-#        env:
-#          TESTCONTAINERS_HOST_OVERRIDE: localhost
-#          DOCKER_HOST: tcp://localhost:2375
