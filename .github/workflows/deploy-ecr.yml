@@ -28,6 +28,12 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      - name : Create db-config.yml
+        run : |
+          mkdir -p storage/src/main/resources
+          echo "${{ secrets.DB_CONFIG }}" > storage/src/main/resources/db-config.yml
+        shell: bash
+
       - name: Build api-user with Gradle
         run: ./gradlew :api-user:build -x test
 
