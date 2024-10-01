@@ -1,5 +1,4 @@
 {
-  "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:992382387989:task-definition/retry-lee-user:6",
   "containerDefinitions": [
     {
       "name": "api-user",
